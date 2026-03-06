@@ -231,6 +231,11 @@ wheels = [
 ]
 
 [[package]]
+name = "monty-workspace"
+version = "0"
+source = { git = "https://github.com/pydantic/monty.git#bf7c7ef4262055f2b55ab75bf1fe83d2ace674f2" }
+
+[[package]]
 name = "packaging"
 version = "26.0"
 source = { registry = "https://pypi.org/simple" }
@@ -271,6 +276,7 @@ version = "0.0.1"
 source = { editable = "." }
 dependencies = [
     { name = "httpx" },
+    { name = "monty-workspace" },
     { name = "posthog" },
     { name = "pydantic" },
     { name = "pyyaml" },
@@ -286,6 +292,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "httpx", specifier = ">=0.27" },
+    { name = "monty-workspace", git = "https://github.com/pydantic/monty.git" },
     { name = "posthog", specifier = ">=3.5" },
     { name = "pydantic", specifier = ">=2.7" },
     { name = "pyyaml", specifier = ">=6.0" },

@@ -12,6 +12,7 @@ from .commands.search import search_command
 from .commands.update import update_command
 from .lib.cache import ensure_registry
 from .lib.output import error
+from .runtime.monty_runtime import run_with_monty
 
 app = typer.Typer(add_completion=False, no_args_is_help=False)
 
@@ -69,6 +70,8 @@ app.add_typer(cache_app, name="cache")
 
 
 def main() -> None:
+    if run_with_monty(app):
+        return
     app()
 
 

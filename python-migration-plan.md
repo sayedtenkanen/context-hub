@@ -3,6 +3,7 @@
 ## Goals
 
 - Provide a Python CLI with feature parity to the current Node.js `chub` CLI.
+- Use `pydantic/monty` as the Python implementation foundation (instead of plain module wiring).
 - Preserve command behavior, flags, and output formats (human + --json).
 - Ship an MCP server in Python with matching tool surface.
 - Keep bundled content support (registry + docs) for offline-first usage.
@@ -12,6 +13,7 @@
 - CLI commands: search, get, annotate, feedback, update, cache, build.
 - Core libraries: registry merge/search, BM25 index, cache, config, frontmatter parsing, output formatting, annotations, telemetry + analytics, identity.
 - MCP server: search, get, list, annotate, feedback tools + registry resource.
+- Runtime architecture: migrate command orchestration to `pydantic/monty` components.
 - Packaging: console entrypoints `pychub` and `pychub-mcp`.
 
 ## Source-of-Truth References
@@ -51,22 +53,23 @@
 
 🚧 **In Progress (Phase 2):**
 
-- get.py (auto-detect doc vs skill, language/version handling, output modes)
 - feedback.py (telemetry, labels, agent detection)
 - build.py (discover DOC.md/SKILL.md, validate frontmatter, generate indexes)
+- monty integration pass (wire existing command handlers into monty workflow model)
 
 ## Immediate Next Sprint (Execution Order)
 
-1. Implement `get.py` and register in `src/pychub/cli.py`.
-2. Implement `telemetry.py` and `feedback.py` together (shared dependencies: client id + env/config gating).
-3. Implement `build.py` with frontmatter validation + `registry.json` and `search-index.json` generation.
-4. Run smoke checks:
+1. Add `pydantic/monty` dependency and scaffold monty app wiring for the CLI.
+2. Move existing command flow (`search`, `get`, `annotate`, `update`, `cache`) onto monty orchestration layers.
+3. Implement `telemetry.py` and `feedback.py` together (shared dependencies: client id + env/config gating).
+4. Implement `build.py` with frontmatter validation + `registry.json` and `search-index.json` generation.
+5. Run smoke checks:
 
 - `pychub update`
 - `pychub search stripe`
 - `pychub annotate stripe/api "test"`
 
-5. Add pytest coverage for `bm25.py`, `registry.py`, and `cache.py` first, then command-level tests.
+6. Expand pytest to include monty integration-level tests after command parity is complete.
 
 ⏳ **Pending:**
 
@@ -76,6 +79,7 @@
 ## Dependency Mapping (Node -> Python)
 
 - commander -> typer (or click)
+- command orchestration / app runtime -> `pydantic/monty`
 - chalk -> rich
 - yaml -> PyYAML
 - zod -> pydantic
@@ -160,9 +164,10 @@
 - ✅ cache (status, clear)
 - ✅ search (fuzzy search, exact id, filters)
 - ✅ annotate (list, read, write, clear)
-- ⏳ get (fetch docs/skills, --lang, --version, --full, --file, -o)
+- ✅ get (fetch docs/skills, --lang, --version, --full, --file, -o)
 - ⏳ feedback (send ratings with labels)
 - ⏳ build (validate, build registry + search index)
+- ⏳ monty runtime integration (replace plain command wiring)
 
 **Definition of Done for Phase 2**
 
@@ -191,4 +196,5 @@
 - ✅ Package name: **pychub** (entrypoints: pychub, pychub-mcp)
 - ✅ Layout: **src/pychub** (uv-friendly)
 - ✅ Ship: **Parallel** to Node CLI initially
+- ✅ Framework direction: **use `pydantic/monty` for runtime orchestration**
 - ⏳ Telemetry default: TBD (likely match Node: opt-out)
