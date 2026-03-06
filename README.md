@@ -1,6 +1,6 @@
 # Context Hub
 
-Coding agents hallucinate APIs and forget what they learn in a session. Context Hub gives them curated, versioned docs, plus the ability to get smarter with every task. All content is open and maintained as markdown in this repo — you can inspect exactly what your agent reads, and contribute back. 
+Coding agents hallucinate APIs and forget what they learn in a session. Context Hub gives them curated, versioned docs, plus the ability to get smarter with every task. All content is open and maintained as markdown in this repo — you can inspect exactly what your agent reads, and contribute back.
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![npm](https://img.shields.io/npm/v/@aisuite/chub)](https://www.npmjs.com/package/@aisuite/chub)
@@ -11,12 +11,23 @@ Coding agents hallucinate APIs and forget what they learn in a session. Context 
 ```bash
 npm install -g @aisuite/chub
 chub search openai                 # find what's available
-chub get openai/chat --lang py     # fetch current docs (Python version) 
+chub get openai/chat --lang py     # fetch current docs (Python version)
+```
+
+## Python Development (uv)
+
+The Python migration work in this repo can be run with `uv`.
+
+```bash
+uv sync
+uv run pychub --version
+uv run pychub search stripe
+uv run pytest
 ```
 
 ## How It Works
 
-Chub is designed for your coding agent to use (not for you to use!). You can prompt your agent to use it (e.g., "Use the CLI command chub to get the latest API documentation for calling OpenAI. Run 'chub help' to understand how it works.") Or by creating an agent skill to use Chub using [SKILL.md](cli/skills/get-api-docs/SKILL.md), and ideally prompting your agent to remember to use this skill. (If you are using Claude Code, create the directory ~/.claude/skills/get-api-docs and put SKILL.md there.) 
+Chub is designed for your coding agent to use (not for you to use!). You can prompt your agent to use it (e.g., "Use the CLI command chub to get the latest API documentation for calling OpenAI. Run 'chub help' to understand how it works.") Or by creating an agent skill to use Chub using [SKILL.md](cli/skills/get-api-docs/SKILL.md), and ideally prompting your agent to remember to use this skill. (If you are using Claude Code, create the directory ~/.claude/skills/get-api-docs and put SKILL.md there.)
 
 **Most of the time, it's simple — search, fetch, use:**
 
@@ -45,17 +56,17 @@ chub get openai/chat --lang py       # Python variant
 chub get openai/chat --lang js       # JavaScript variant
 ```
 
-More content types than API documentation (such as agent skills) are on the roadmap. 
+More content types than API documentation (such as agent skills) are on the roadmap.
 
 ## Commands
 
-| Command | Purpose |
-|---------|---------|
-| `chub search [query]` | Search docs and skills (no query = list all) |
-| `chub get <id> [--lang py\|js]` | Fetch docs or skills by ID |
-| `chub annotate <id> <note>` | Attach a note to a doc or skill |
-| `chub annotate <id> --clear` | Remove annotations |
-| `chub annotate --list` | List all annotations |
+| Command                         | Purpose                                        |
+| ------------------------------- | ---------------------------------------------- |
+| `chub search [query]`           | Search docs and skills (no query = list all)   |
+| `chub get <id> [--lang py\|js]` | Fetch docs or skills by ID                     |
+| `chub annotate <id> <note>`     | Attach a note to a doc or skill                |
+| `chub annotate <id> --clear`    | Remove annotations                             |
+| `chub annotate --list`          | List all annotations                           |
 | `chub feedback <id> <up\|down>` | Upvote or downvote a doc (sent to maintainers) |
 
 For the full list of commands, flags, and piping patterns, see the [CLI Reference](docs/cli-reference.md).
