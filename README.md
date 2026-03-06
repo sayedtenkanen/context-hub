@@ -25,6 +25,30 @@ uv run pychub search stripe
 uv run pytest
 ```
 
+### Python CLI (pychub)
+
+The Python CLI is under active development and mirrors the Node CLI commands.
+
+```bash
+pychub search "stripe payments"
+pychub get stripe/api --lang py
+pychub annotate stripe/api "Note about webhooks"
+pychub feedback stripe/api up --label helpful
+pychub update
+pychub cache status
+```
+
+### Monty Runtime (pydantic/monty)
+
+The Python CLI can be routed through a Monty runtime adapter. This is a scaffold
+for upcoming orchestration changes.
+
+```bash
+PYCHUB_RUNTIME=monty pychub search stripe
+```
+
+If Monty is not available, the CLI falls back to the default Typer execution.
+
 ## How It Works
 
 Chub is designed for your coding agent to use (not for you to use!). You can prompt your agent to use it (e.g., "Use the CLI command chub to get the latest API documentation for calling OpenAI. Run 'chub help' to understand how it works.") Or by creating an agent skill to use Chub using [SKILL.md](cli/skills/get-api-docs/SKILL.md), and ideally prompting your agent to remember to use this skill. (If you are using Claude Code, create the directory ~/.claude/skills/get-api-docs and put SKILL.md there.)
@@ -68,6 +92,19 @@ More content types than API documentation (such as agent skills) are on the road
 | `chub annotate <id> --clear`    | Remove annotations                             |
 | `chub annotate --list`          | List all annotations                           |
 | `chub feedback <id> <up\|down>` | Upvote or downvote a doc (sent to maintainers) |
+
+### Python Commands (pychub)
+
+| Command                           | Purpose                                        |
+| --------------------------------- | ---------------------------------------------- |
+| `pychub search [query]`           | Search docs and skills (no query = list all)   |
+| `pychub get <id> [--lang py\|js]` | Fetch docs or skills by ID                     |
+| `pychub annotate <id> <note>`     | Attach a note to a doc or skill                |
+| `pychub annotate <id> --clear`    | Remove annotations                             |
+| `pychub annotate --list`          | List all annotations                           |
+| `pychub feedback <id> <up\|down>` | Upvote or downvote a doc (sent to maintainers) |
+| `pychub update`                   | Refresh the cached registry index              |
+| `pychub cache status\|clear`      | Manage the local cache                         |
 
 For the full list of commands, flags, and piping patterns, see the [CLI Reference](docs/cli-reference.md).
 

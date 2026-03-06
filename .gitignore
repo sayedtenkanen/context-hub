@@ -50,3 +50,5 @@ pip-wheel-metadata/
 
 # Notebook checkpoints
 .ipynb_checkpoints/
+.coverage
+htmlcov/

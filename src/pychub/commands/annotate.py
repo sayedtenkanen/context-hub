@@ -6,7 +6,12 @@ Port of cli/src/commands/annotate.js
 import typer
 from rich.console import Console
 
-from ..lib.annotations import clear_annotation, list_annotations, read_annotation, write_annotation
+from ..lib.annotations import (
+    clear_annotation,
+    list_annotations,
+    read_annotation,
+    write_annotation,
+)
 from ..lib.output import error, output
 
 console = Console()
@@ -15,7 +20,9 @@ console = Console()
 def annotate_command(
     entry_id: str = typer.Argument(None, help="Entry ID to annotate"),
     note: str = typer.Argument(None, help="Annotation text"),
-    clear: bool = typer.Option(False, "--clear", help="Remove annotation for this entry"),
+    clear: bool = typer.Option(
+        False, "--clear", help="Remove annotation for this entry"
+    ),
     list_all: bool = typer.Option(False, "--list", help="List all annotations"),
     json: bool = typer.Option(False, "--json", help="JSON output"),
 ) -> None:
@@ -31,19 +38,18 @@ def annotate_command(
 
     if list_all:
         annotations = list_annotations()
+
+        def human_formatter(data):
+            if not data:
+                console.print("No annotations.")
+                return
+            for a in data:
+                console.print(f"[bold]{a['id']}[/bold] [dim]({a['updatedAt']})[/dim]")
+                console.print(f"  {a['note']}\n")
+
         output(
             annotations,
-            lambda data: (
-                console.print("No annotations.")
-                if not data
-                else *[
-                    (
-                        console.print(f"[bold]{a['id']}[/bold] [dim]({a['updatedAt']})[/dim]"),
-                        console.print(f"  {a['note']}\n"),
-                    )
-                    for a in data
-                ],
-            ),
+            human_formatter,
             opts,
         )
         return
@@ -74,7 +80,9 @@ def annotate_command(
             output(
                 existing,
                 lambda data: (
-                    console.print(f"[bold]{data['id']}[/bold] [dim]({data['updatedAt']})[/dim]"),
+                    console.print(
+                        f"[bold]{data['id']}[/bold] [dim]({data['updatedAt']})[/dim]"
+                    ),
                     console.print(data["note"]),
                 ),
                 opts,

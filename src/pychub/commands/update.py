@@ -86,3 +86,16 @@ def update(
             raise typer.Exit(1)
 
     asyncio.run(_update())
+
+
+def update_command(
+    force: bool = typer.Option(
+        False, "--force", help="Force re-download even if cache is fresh"
+    ),
+    full: bool = typer.Option(
+        False, "--full", help="Download the full bundle for offline use"
+    ),
+    json_output: bool = typer.Option(False, "--json", help="Output as JSON"),
+) -> None:
+    """Refresh the cached registry index."""
+    update(force=force, full=full, json_output=json_output)

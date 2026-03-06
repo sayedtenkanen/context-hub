@@ -7,6 +7,7 @@ import typer
 from . import get_version
 from .commands.annotate import annotate_command
 from .commands.cache import cache_app
+from .commands.feedback import feedback_command
 from .commands.get import get_command
 from .commands.search import search_command
 from .commands.update import update_command
@@ -17,7 +18,7 @@ from .runtime.monty_runtime import run_with_monty
 app = typer.Typer(add_completion=False, no_args_is_help=False)
 
 # Commands that can run without a loaded registry
-SKIP_REGISTRY = {"update", "cache", "annotate"}
+SKIP_REGISTRY = {"update", "cache", "annotate", "feedback"}
 
 
 def version_callback(value: bool) -> None:
@@ -62,6 +63,7 @@ app.command(name="search", help="Search docs and skills (no query lists all)")(
     search_command
 )
 app.command(name="get", help="Fetch docs or skills by ID")(get_command)
+app.command(name="feedback", help="Rate a doc or skill (up/down)")(feedback_command)
 app.command(name="update", help="Refresh the cached registry index")(update_command)
 app.command(name="annotate", help="Attach agent notes to a doc or skill")(
     annotate_command
